@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import useSecurePage from '@/hooks/useSecurePage';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
@@ -6,6 +7,7 @@ import axios from 'axios';
 const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), { ssr: false });
 
 export default function EditPost() {
+  const { isReady, user } = useSecurePage(); // ✅ still first hook
   const router = useRouter();
   const { slug } = router.query;
 
@@ -14,19 +16,22 @@ export default function EditPost() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
+  // ✅ move conditional render below all hooks
   useEffect(() => {
-    if (slug) {
-      axios.get(`/api/posts/${slug}`).then((res) => {
-        const post = res.data.post;
-        setTitle(post.title);
-        setContent(post.content);
-        setLoading(false);
-      }).catch(() => {
-        alert('Post not found');
-        router.push('/admin');
-      });
+    if (isReady && slug) {
+      axios.get(`/api/posts/${slug}`)
+        .then((res) => {
+          const post = res.data.post;
+          setTitle(post.title);
+          setContent(post.content);
+          setLoading(false);
+        })
+        .catch(() => {
+          alert('Post not found');
+          router.push('/admin');
+        });
     }
-  }, [slug]);
+  }, [isReady, slug]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -41,7 +46,8 @@ export default function EditPost() {
     }
   };
 
-  if (loading) return <p className="p-8">Loading post...</p>;
+  // ✅ after all hooks, safe to block render
+  if (!isReady || loading) return <p className="p-8">Loading post...</p>;
 
   return (
     <div className="p-8 max-w-3xl mx-auto">

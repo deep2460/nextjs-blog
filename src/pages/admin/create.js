@@ -1,16 +1,22 @@
 import { useState } from 'react';
+import useSecurePage from '@/hooks/useSecurePage';
 import dynamic from 'next/dynamic';
 import slugify from '@/utils/slugify';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
+
 const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), { ssr: false });
 
 export default function CreatePost() {
+  const { isReady, user } = useSecurePage();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
+   
+
+  if (!isReady) return null; 
 
   const slug = slugify(title);
 
@@ -35,6 +41,7 @@ export default function CreatePost() {
 
   return (
     <div className="p-8 max-w-3xl mx-auto">
+      <h1 className="text-2xl">Welcome, {user}</h1>
       <h1 className="text-2xl font-bold mb-4">Create New Post</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>

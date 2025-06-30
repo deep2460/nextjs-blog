@@ -1,14 +1,16 @@
 import dbConnect from '@/lib/dbconnect';
 import Post from '@/models/Post';
+import { verifyAdmin } from '@/lib/verifyAdmin';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
-   console.log(req.body)
+   //console.log(req.body)
   const { title, content, slug } = req.body;
 
   try {
+    await verifyAdmin(req);
     await dbConnect();
     const post = await Post.create({ title, content, slug });
     res.status(200).json({ success: true, post });

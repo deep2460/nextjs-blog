@@ -1,9 +1,11 @@
 import dbConnect from '@/lib/dbconnect';
 import Post from '@/models/Post';
 
+
 export default async function handler(req, res) {
     const { slug } = req.query;
     console.log('📥 API hit with slug:', slug);  // Should log a value
+   
     await dbConnect();
 
     if (req.method === 'GET') {
