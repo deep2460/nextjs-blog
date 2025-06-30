@@ -15,7 +15,7 @@ export default function HomePage() {
     <main className="min-h-screen bg-gray-100">
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-6 py-8 text-center">
-          <h1 className="text-4xl font-extrabold text-gray-900">📚 Welcome to Deepak&apos;s Blog</h1>
+          <h1 className="text-4xl font-extrabold text-gray-900">📚 Welcome to Deepak Blog</h1>
           <p className="mt-2 text-gray-600 text-lg">Explore posts created by the admin — live, secure, and cleanly styled.</p>
         </div>
       </header>
@@ -46,7 +46,7 @@ export default function HomePage() {
                   href={`/posts/${post.slug}`}
                   className="mt-4 inline-block text-blue-600 hover:underline text-sm font-medium"
                 >
-                  Read More →
+                  Read More 
                 </Link>
               </div>
             ))}
