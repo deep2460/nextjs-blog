@@ -8,20 +8,19 @@ export default function PostViewer() {
 
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-  console.log('📥 Request for slug:', slug);
-  const fetchPost = async () => {
-    try {
-      const res = await axios.get(`/api/posts/${slug}`);
-      setPost(res.data.post);
-    } catch (error) {
-      console.error('Failed to fetch post:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await axios.get(`/api/posts/${slug}`);
+        setPost(res.data.post);
+      } catch (error) {
+        console.error('Failed to fetch post:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (slug) fetchPost();
   }, [slug]);
 

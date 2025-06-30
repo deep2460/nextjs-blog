@@ -31,7 +31,7 @@ export default function EditPost() {
           router.push('/admin');
         });
     }
-  }, [isReady, slug]);
+  }, [isReady, slug, router]);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
