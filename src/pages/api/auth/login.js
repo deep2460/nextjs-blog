@@ -26,14 +26,15 @@ export default async function handler(req, res) {
   const token = jwt.sign(
     { username: admin.username },
     process.env.JWT_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: '1d' }
   );
 
   const cookie = serialize('admin-token', token, {
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     path: '/',
-    maxAge: 60 * 60 * 24 * 7,
+    maxAge: 60 * 60 * 24 ,
   });
 
   res.setHeader('Set-Cookie', cookie);
